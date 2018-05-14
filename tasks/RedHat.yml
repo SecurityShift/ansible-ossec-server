@@ -4,7 +4,33 @@
 - name: "RedHat | Set some facts"
   set_fact:
     ansible_distribution: centos
-  when: ansible_distribution == "RedHat"
+    when: ansible_distribution == "RedHat"
+
+- name: Add channel gpg keys
+  copy:
+    src: "RPM-GPG-KEY-{{ item }}"
+    dest: '/etc/pki/rpm-gpg/RPM-GPG-KEY-{{ item }}'
+  with_items:
+    - '{{ ossec_rhn_gpg_keys }}'
+
+- name: Import channel gpg keys
+  rpm_key:
+    state: present
+    key: '/etc/pki/rpm-gpg/RPM-GPG-KEY-{{ item }}'
+  with_items:
+    - '{{ ossec_rhn_gpg_keys }}'
+
+- name: Subscribe to required channels
+  rhn_channel:
+    name: '{{ item }}'
+    state: '{{ item.state | default("present") }}'
+    sysname: '{{ inventory_hostname }}'
+    url: 'https://{{ spacewalk_server }}/rpc/api'
+    user: '{{ spacewalk_admin_user }}'
+    password: '{{ spacewalk_admin_password }}'
+  with_items:
+    - '{{ ossec_rhn_channels }}'
+
 
   #- name: "RedHat | Install atomicorp repo"
   #yum:
@@ -15,6 +41,15 @@
   #yum:
   #  name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ansible_distribution_major_version}}.noarch.rpm"
   #  state: present
+
+- name: "RedHat | Remove ossec-hids-agent"
+  yum:
+    pkg: "{{ item }}"
+    state: absent
+  with_items:
+    - ossec-hids-agent
+  tags:
+    - init
 
 - name: "RedHat | Install ossec-hids-server"
   yum:
@@ -45,3 +80,20 @@
   set_fact:
     ossec_server_config_filename: ossec-server.conf
     ossec_init_name: ossec-hids
+
+- name: Make sure services can pass through firewall
+  firewalld:
+    rich_rule: "rule family=ipv4 source address={{ ipv4_location_supernet }} port port={{ item.port }} protocol={{ item.protocol }} accept"
+    permanent: true
+    immediate: true
+    zone: public
+    state: enabled
+  with_items:
+    - { port: 1514, protocol: udp }
+    - { port: 1515, protocol: tcp }
+  when:
+    - firewalld_state != 'stopped'
+  notify:
+    - reload firewalld
+  tags:
+    - firewall

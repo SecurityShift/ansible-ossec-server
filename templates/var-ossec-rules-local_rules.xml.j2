@@ -24,16 +24,80 @@
     -  Level 0 means ignore.
     -->
   <rule id="100001" level="0">
-    <if_sid>5711</if_sid>
-    <srcip>1.1.1.1</srcip>
-    <description>Example of rule that will ignore sshd </description>
-    <description>failed logins from IP 1.1.1.1.</description>
+    <if_sid>1002</if_sid>
+    <program_name>object-auditor|account-auditor|container-auditor</program_name>
+    <match>, 0 errors|Total errors: 0,|,0 failed audit|, 0 failed audit</match>
+    <description>Ignore if no errors</description>
   </rule>
-  
-  
+  <rule id="100002" level="0">
+    <if_sid>1002</if_sid>
+    <program_name>object-replicator|account-replicator|container-replicator|object-updater|account-updater|container-updater</program_name>
+    <match>, 0 failures</match>
+    <description>Ignore if no errors</description>
+  </rule>
+
+  <!-- May  8 14:39:43 vm02 libvirtd: 2018-05-08 14:39:43.786+0000: 28098: error : qemuDomainAgentAvailable:6030 : Guest agent is not responding: QEMU guest agent is not connected -->
+  <rule id="100003" level="0">
+    <if_sid>1002</if_sid>
+    <program_name>libvirtd</program_name>
+    <match>Guest agent is not responding</match>
+    <description>Ignore guest agent not running errors</description>
+  </rule>
+
+  <!-- cpu nodes auto add new multipaths -->
+  <rule id="100004" level="0">
+    <if_sid>551</if_sid>
+    <if_group>syscheck</if_group>
+    <hostname>^cpu</hostname>
+    <match>Integrity checksum changed for: '/etc/multipath/bindings'</match>
+    <description>cpu nodes auto add new multipaths</description>
+  </rule>
+  <rule id="100005" level="0">
+    <if_sid>551</if_sid>
+    <if_group>syscheck</if_group>
+    <hostname>^cpu</hostname>
+    <match>Integrity checksum changed for: '/etc/multipath/wwids'</match>
+    <description>cpu nodes auto add new multipaths</description>
+  </rule>
+  <rule id="100006" level="0">
+    <if_sid>551</if_sid>
+    <if_group>syscheck</if_group>
+    <hostname>^cpu</hostname>
+    <match>Integrity checksum changed for: '/etc/openvswitch/conf.db'</match>
+    <description>cpu nodes auto add new vxlan networks</description>
+  </rule>
+
+  <rule id="100007" level="0">
+    <if_sid>5104</if_sid>
+    <if_group>kernel</if_group>
+    <hostname>^cpu|^vm0</hostname>
+    <match>Interface entered in promiscuous(sniffing) mode.</match>
+    <description>cpu nodes auto add new vxlan networks</description>
+  </rule>
+
+  <!-- https://pagure.io/freeipa/issue/7032 -->
+  <rule id="100008" level="0">
+    <if_sid>1002</if_sid>
+    <hostname>^ipa</hostname>
+    <match>failed to set perms</match>
+    <description>Fixed in later release to be a warning</description>
+  </rule>
+
+  <rule id="100009" level="0">
+    <if_sid>550</if_sid>
+    <hostname>^vm0</hostname>
+    <match>/etc/libvirt/qemu</match>
+    <description>These change from the web interface</description>
+  </rule>
+  <rule id="100010" level="0">
+    <if_sid>18154</if_sid>
+    <match>ERROR(2006): PerfNet</match>
+    <description>32bit software?</description>
+  </rule>
+
   <!-- This example will ignore ssh failed logins for the user name XYZABC.
     -->
-  <!--  
+  <!--
   <rule id="100020" level="0">
     <if_sid>5711</if_sid>
     <user>XYZABC</user>
@@ -41,8 +105,8 @@
     <description>failed logins for user XYZABC.</description>
   </rule>
   -->
-  
-  
+
+
   <!-- Specify here a list of rules to ignore. -->
   <!--
   <rule id="100030" level="0">
@@ -50,7 +114,7 @@
     <description>List of rules to be ignored.</description>
   </rule>
   -->
-   
+
 </group> <!-- SYSLOG,LOCAL -->
 
 

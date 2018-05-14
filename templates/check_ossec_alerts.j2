@@ -1,0 +1,41 @@
+#!/bin/bash
+# {{ ansible_managed }}
+#######################################################################
+#####VARIABLES
+osseclog="/var/ossec/logs/alerts/alerts.log";
+machine=$1
+critical=$2
+mypath="/tmp"
+#####
+#######################################################################
+
+if [ ! -e $mypath/count.ocheck.$machine ] ; then
+        echo 0 > $mypath/count.ocheck.$machine
+fi
+
+startline=$(cat $mypath/count.ocheck.$machine)
+endline=$(cat $osseclog | wc -l)
+if [ "$startline" -gt "$endline" ] ; then
+        startline=0
+fi
+startline=$(expr $startline + 1)
+echo $endline > $mypath/count.ocheck.$machine
+
+> $mypath/tmp.ocheck.$machine
+for ((a=$critical; a <= 15 ; a++))
+do
+        head -n $endline $osseclog | tail -n +$startline | grep -A 1 $machine | grep "level $a" >> $mypath/tmp.ocheck.$machine
+done
+
+msg=""
+msg=$(sort $mypath/tmp.ocheck.$machine | uniq)
+
+if [ "$msg" == "" ] ; then
+    echo OK: No security threats found
+    exit 0
+else
+    echo CRITICAL: alerts found: $msg
+    exit 2
+fi
+echo Something is wrong, script went out of bounds?
+exit 1

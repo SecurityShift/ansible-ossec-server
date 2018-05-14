@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+command[check_ossec]=/bin/sudo /usr/lib64/nagios/plugins/check_ossec -s all
+command[check_ossec_agent]=/bin/sudo /usr/lib64/nagios/plugins/check_ossec -a $ARG1$
+command[check_ossec_alerts]=/bin/sudo /usr/lib64/nagios/plugins/check_ossec_alerts $ARG1$ $ARG2$
