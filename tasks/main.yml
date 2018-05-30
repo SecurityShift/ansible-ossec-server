@@ -104,14 +104,16 @@
 
 - name: "Enable client-syslog if not running and ossec_server_config.syslog_outputs is given"
   command: /var/ossec/bin/ossec-control enable client-syslog
+  check_mode: no
   when:
-    - csyslog_running.stdout == '0'
+    - csyslog_running.stdout is defined and csyslog_running.stdout == '0'
     - ossec_server_config.syslog_outputs is defined
 
 - name: "Start client-syslog if not running and ossec_server_config.syslog_outputs is given"
   command: /var/ossec/bin/ossec-control start client-syslog
+  check_mode: no
   when:
-    - csyslog_running.stdout == '0'
+    - csyslog_running.stdout is defined and csyslog_running.stdout == '0'
     - ossec_server_config.syslog_outputs is defined
 
 - name: "Write ossec-authd init file"

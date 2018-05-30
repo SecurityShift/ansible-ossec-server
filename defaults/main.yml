@@ -8,6 +8,4 @@ ossec_server_atomic_release: 1.0-21
 
 ossec_rhn_channels:
   - ossec-el7-x86_64
-ossec_rhn_gpg_keys:
-  - atomicorp
 

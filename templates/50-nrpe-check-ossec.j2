@@ -1,3 +1,4 @@
 # {{ ansible_managed }}
+Defaults:nrpe !requiretty,!syslog
 nrpe ALL=(ALL) NOPASSWD:/usr/lib64/nagios/plugins/check_ossec
 nrpe ALL=(ALL) NOPASSWD:/usr/lib64/nagios/plugins/check_ossec_alerts
