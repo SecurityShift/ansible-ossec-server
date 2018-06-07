@@ -1,28 +1,7 @@
-<!-- @(#) $Id: ./etc/rules/local_rules.xml, 2011/09/08 dcid Exp $
-
-  -  Example of local rules for OSSEC.
-  -
-  -  Copyright (C) 2009 Trend Micro Inc.
-  -  All rights reserved.
-  -
-  -  This program is a free software; you can redistribute it
-  -  and/or modify it under the terms of the GNU General Public
-  -  License (version 2) as published by the FSF - Free Software
-  -  Foundation.
-  -
-  -  License details: http://www.ossec.net/en/licensing.html
-  -->
-
-
-<!-- Modify it at your will. -->
+<!-- {{ ansible_managed }} -->
 
 <group name="local,syslog,">
 
-  <!-- Note that rule id 5711 is defined at the ssh_rules file
-    -  as a ssh failed login. This is just an example
-    -  since ip 1.1.1.1 shouldn't be used anywhere.
-    -  Level 0 means ignore.
-    -->
   <rule id="100001" level="0">
     <if_sid>1002</if_sid>
     <program_name>object-auditor|account-auditor|container-auditor</program_name>
@@ -46,76 +25,70 @@
 
   <!-- cpu nodes auto add new multipaths -->
   <rule id="100004" level="0">
-    <if_sid>551</if_sid>
+    <if_sid>550</if_sid>
     <if_group>syscheck</if_group>
     <hostname>^cpu</hostname>
     <match>Integrity checksum changed for: '/etc/multipath/bindings'</match>
     <description>cpu nodes auto add new multipaths</description>
   </rule>
   <rule id="100005" level="0">
-    <if_sid>551</if_sid>
+    <if_sid>550</if_sid>
     <if_group>syscheck</if_group>
     <hostname>^cpu</hostname>
     <match>Integrity checksum changed for: '/etc/multipath/wwids'</match>
     <description>cpu nodes auto add new multipaths</description>
   </rule>
   <rule id="100006" level="0">
-    <if_sid>551</if_sid>
+    <if_sid>550</if_sid>
     <if_group>syscheck</if_group>
     <hostname>^cpu</hostname>
     <match>Integrity checksum changed for: '/etc/openvswitch/conf.db'</match>
     <description>cpu nodes auto add new vxlan networks</description>
   </rule>
-
   <rule id="100007" level="0">
+    <if_sid>550</if_sid>
+    <if_group>syscheck</if_group>
+    <hostname>^cpu</hostname>
+    <match>Integrity checksum changed for: '/etc/libvirt/qemu/</match>
+    <description>cpu nodes auto add new instances</description>
+  </rule>
+
+  <rule id="100008" level="0">
     <if_sid>5104</if_sid>
     <if_group>kernel</if_group>
     <hostname>^cpu|^vm0</hostname>
-    <match>Interface entered in promiscuous(sniffing) mode.</match>
+    <match>entered promiscuous mode</match>
     <description>cpu nodes auto add new vxlan networks</description>
   </rule>
 
   <!-- https://pagure.io/freeipa/issue/7032 -->
-  <rule id="100008" level="0">
+  <rule id="100009" level="0">
     <if_sid>1002</if_sid>
     <hostname>^ipa</hostname>
     <match>failed to set perms</match>
     <description>Fixed in later release to be a warning</description>
   </rule>
 
-  <rule id="100009" level="0">
+  <rule id="100010" level="0">
     <if_sid>550</if_sid>
     <hostname>^vm0</hostname>
     <match>/etc/libvirt/qemu</match>
     <description>These change from the web interface</description>
   </rule>
-  <rule id="100010" level="0">
+
+  <rule id="100011" level="0">
     <if_sid>18154</if_sid>
     <match>ERROR(2006): PerfNet</match>
     <description>32bit software?</description>
   </rule>
 
-  <!-- This example will ignore ssh failed logins for the user name XYZABC.
-    -->
-  <!--
-  <rule id="100020" level="0">
-    <if_sid>5711</if_sid>
-    <user>XYZABC</user>
-    <description>Example of rule that will ignore sshd </description>
-    <description>failed logins for user XYZABC.</description>
+  <rule id="100012" level="0">
+    <if_sid>5104</if_sid>
+    <if_group>nova-api|glance-api|neutron-server</if_group>
+    <hostname>^controller</hostname>
+    <match>SSLError: ('timed out',)</match>
+    <description>Connections timing out to api endpoints</description>
   </rule>
-  -->
 
+</group>
 
-  <!-- Specify here a list of rules to ignore. -->
-  <!--
-  <rule id="100030" level="0">
-    <if_sid>12345, 23456, xyz, abc</if_sid>
-    <description>List of rules to be ignored.</description>
-  </rule>
-  -->
-
-</group> <!-- SYSLOG,LOCAL -->
-
-
-<!-- EOF -->
