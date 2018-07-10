@@ -49,7 +49,6 @@
   notify:
     - restart ossec-server
   tags:
-    - init
     - config
 
 - name: "Installing custom local_rules.xml"
@@ -64,7 +63,6 @@
   notify:
     - restart ossec-server
   tags:
-    - init
     - config
     - rules
 
