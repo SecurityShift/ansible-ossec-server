@@ -138,7 +138,7 @@ if [ $CHECK_AGENT -eq 1 ]; then
 
         for host in $(echo $AGENT | sed 's/,/ /g');
         do
-                RESULT=$($AGENT_CONTROL -l | grep ${host},)
+                RESULT=$($AGENT_CONTROL -l | grep "Name: ${host},")
 
                 case $RESULT in
 
