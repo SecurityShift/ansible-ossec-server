@@ -31,10 +31,11 @@ msg=""
 msg=$(sort $mypath/tmp.ocheck.$machine | uniq)
 
 if [ "$msg" == "" ] ; then
-    echo OK: No security threats found
+    echo "OK: No security threats found | alerts=0"
     exit 0
 else
-    echo CRITICAL: alerts found: $msg
+    num_alerts=$(echo "$msg" | wc -l | tr -d '[:space:]');
+    echo "CRITICAL: alerts found: $msg | alerts=$num_alerts"
     exit 2
 fi
 echo Something is wrong, script went out of bounds?
