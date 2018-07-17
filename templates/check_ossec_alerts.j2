@@ -34,8 +34,8 @@ if [ "$msg" == "" ] ; then
     echo "OK: No security threats found | alerts=0"
     exit 0
 else
-    num_alerts=$(echo "$msg" | wc -l | tr -d '[:space:]');
-    echo "CRITICAL: alerts found: $msg | alerts=$num_alerts"
+    num_alerts=$(wc -l $mypath/tmp.ocheck.$machine |awk '{print $1}' | tr -d '[:space:]');
+    echo "CRITICAL: $num_alerts alerts found: $msg | alerts=$num_alerts"
     exit 2
 fi
 echo Something is wrong, script went out of bounds?
