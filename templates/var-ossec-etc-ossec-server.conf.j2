@@ -9,9 +9,9 @@
 {% endfor %}
     <smtp_server>{{ ossec_server_config.mail_smtp_server }}</smtp_server>
     <email_from>{{ ossec_server_config.mail_from }}</email_from>
-    {% else %}
+{% else %}
     <email_notification>no</email_notification>
-    {% endif %}
+{% endif %}
   </global>
 
 {% if ossec_server_config.extra_emails is defined %}
@@ -40,7 +40,7 @@
     <rule_id>{{ mail.rule_id }}</rule_id>
     {% endif %}
   </email_alerts>
-{% endfor %}    
+{% endfor %}
 {% endif %}
 
   <rules>
@@ -117,7 +117,7 @@
     <!-- Files/directories to ignore -->
     {% for ignore_file in ossec_server_config.ignore_files %}
     <ignore>{{ ignore_file }}</ignore>
-    {% endfor %}    
+    {% endfor %}
   </syscheck>
 
   <rootcheck>
