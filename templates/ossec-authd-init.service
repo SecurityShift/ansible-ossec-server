@@ -1,4 +1,5 @@
 #!/bin/sh
+# {{ ansible_managed }}
 #
 # ossec-authd  Start the OSSEC-HIDS Authentication Daemon
 #

@@ -1,5 +1,14 @@
 <!-- {{ ansible_managed }} -->
 
+<pre>
+  <rule id="512" level="9" overwrite="yes">
+    <if_sid>510</if_sid>
+    <match>^System Audit</match>
+    <description>System Audit event.</description>
+    <group>rootcheck,</group>
+  </rule>
+</pre>
+
 <group name="local,syslog,">
 
   <rule id="100001" level="0">
@@ -55,7 +64,7 @@
 
   <rule id="100008" level="0">
     <if_sid>5104</if_sid>
-    <if_group>kernel</if_group>
+    <program_name>kernel</program_name>
     <hostname>^cpu|^vm0</hostname>
     <match>entered promiscuous mode</match>
     <description>cpu nodes auto add new vxlan networks</description>
@@ -84,9 +93,9 @@
 
   <rule id="100012" level="0">
     <if_sid>1002</if_sid>
-    <if_group>nova-api|glance-api|neutron-server</if_group>
+    <program_name>nova-api|glance-api|neutron-server</program_name>
     <hostname>^controller</hostname>
-    <match>SSLError: ('timed out',)</match>
+    <match>SSLError.*timed out</match>
     <description>Connections timing out to api endpoints</description>
   </rule>
 
