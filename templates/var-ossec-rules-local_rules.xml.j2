@@ -1,15 +1,12 @@
 <!-- {{ ansible_managed }} -->
 
-<pre>
+<group name="local,syslog,">
   <rule id="512" level="9" overwrite="yes">
     <if_sid>510</if_sid>
     <match>^System Audit</match>
     <description>System Audit event.</description>
     <group>rootcheck,</group>
   </rule>
-</pre>
-
-<group name="local,syslog,">
 
   <rule id="100001" level="0">
     <if_sid>1002</if_sid>
