@@ -95,6 +95,15 @@
     - init
     - config
 
+- name: Selinux file context on log file
+  sefcontext:
+    target: '/var/ossec/logs(/.*)?'
+    setype: var_log_t
+    state: present
+  notify: restorecon ossec logs
+  tags:
+    - selinux
+
 - name: "Check if client-syslog is enabled"
   shell: "/var/ossec/bin/ossec-control status | grep -c 'ossec-csyslogd is running' | xargs echo"
   register: csyslog_running
