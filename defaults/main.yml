@@ -1,6 +1,7 @@
 ---
 # defaults file for ossec-server
-#
+
+ossec_server_role_git_repo: https://github.com/SecurityShift/ansible-role-ossec-server
 ossec_server_config: []
 ossec_agent_configs: []
 ossec_server_fqdn: "ossec-server"

@@ -1,4 +1,6 @@
 # {{ ansible_managed }}
+# See {{ ossec_server_role_git_repo }}/blob/master/templates/50-nrpe-check-ossec.j2
+
 Defaults:nrpe !requiretty,!syslog
 nrpe ALL=(ALL) NOPASSWD:/usr/lib64/nagios/plugins/check_ossec
 nrpe ALL=(ALL) NOPASSWD:/usr/lib64/nagios/plugins/check_ossec_alerts

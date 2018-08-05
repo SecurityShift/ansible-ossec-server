@@ -6,6 +6,7 @@
     name: "{{ ossec_init_name }}"
     state: restarted
     enabled: yes
+  when: no_restart is not defined and not no_restart
 
 - name: systemd daemon-reload
   command: systemctl daemon-reload

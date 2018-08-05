@@ -1,6 +1,7 @@
 #!/bin/sh
 # {{ ansible_managed }}
-#
+# See {{ ossec_server_role_git_repo }}/blob/master/templates/ossec-authd-init.service
+
 # ossec-authd  Start the OSSEC-HIDS Authentication Daemon
 #
 # chkconfig: 2345 99 01
