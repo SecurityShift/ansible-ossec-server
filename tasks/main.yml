@@ -137,6 +137,17 @@
     - init
     - config
 
+- name: "Write ossec-authd auth file"
+  copy:
+    content: '{{ ossec_authd_password }}'
+    dest: /var/ossec/etc/authd.pass
+    owner: ossec
+    group: ossec
+    mode: 0600
+  tags:
+    - config
+    - auth
+
 - name: "Write ossec-authd systemd file"
   template:
     src: ossec-authd.service
@@ -186,6 +197,7 @@
     owner: root
     group: root
     mode: 0640
+    validate: '/usr/sbin/visudo -cf %s'
   tags:
     - monitoring
 
