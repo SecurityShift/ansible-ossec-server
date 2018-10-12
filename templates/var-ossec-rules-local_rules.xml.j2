@@ -97,5 +97,21 @@
     <description>Connections timing out to api endpoints</description>
   </rule>
 
+  <rule id="100013" level="0">
+    <if_sid>1002</if_sid>
+    <program_name>pluto</program_name>
+    <hostname>^net</hostname>
+    <match>failed to install negotiation_shunt|delete_bare_shunt() failed</match>
+    <description>VPN SA timeout is 60m</description>
+  </rule>
+
+  <rule id="100014" level="0">
+    <if_sid>1002</if_sid>
+    <program_name>pagerduty_icinga</program_name>
+    <hostname>^monitor-master|^regmon</hostname>
+    <match>flock /tmp/pagerduty_icinga/lockfile failed: Resource temporarily unavailable</match>
+    <description>Icinga logs an error on multiple concurrent notifications</description>
+  </rule>
+
 </group>
 
