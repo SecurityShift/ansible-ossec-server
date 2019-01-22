@@ -20,4 +20,6 @@ galaxy_info:
         - all
   categories:
     - monitoring
+    - security
+    - ossec
 dependencies: []

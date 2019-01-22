@@ -1,10 +1,10 @@
 ---
 # Tasks specific for RedHat systems
 
-- name: "RedHat | Set some facts"
-  set_fact:
-    ansible_distribution: centos
-    when: ansible_distribution == "RedHat"
+#- name: "RedHat | Set some facts"
+#  set_fact:
+#    ansible_distribution: centos
+#  when: ansible_distribution == "RedHat"
 
 - name: Subscribe to required channels
   import_role:
